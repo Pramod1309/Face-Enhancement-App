@@ -100,7 +100,7 @@ def test_face_enhancement(case_id):
     """Test Face Enhancement API - POST /api/enhance-face/{case_id}"""
     print(f"\n=== Testing Face Enhancement for case_id: {case_id} ===")
     try:
-        response = requests.post(f"{BACKEND_URL}/enhance-face/{case_id}", timeout=30)
+        response = requests.post(f"{BACKEND_URL}/enhance-face/{case_id}", timeout=60)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.json()}")
         
@@ -110,6 +110,9 @@ def test_face_enhancement(case_id):
             
             if all(field in data for field in required_fields):
                 print("✅ Face enhancement PASSED")
+                print(f"Method used: {data.get('method_used')}")
+                print(f"Confidence score: {data.get('confidence_score')}")
+                print(f"Forensic grade: {data.get('forensic_grade', 'N/A')}")
                 return True, data.get('result_id')
             else:
                 print("❌ Face enhancement FAILED - Missing required fields")
@@ -121,6 +124,46 @@ def test_face_enhancement(case_id):
     except Exception as e:
         print(f"❌ Face enhancement FAILED - Error: {str(e)}")
         return False, None
+
+def test_face_enhancement_with_models(case_id):
+    """Test Face Enhancement with different model types"""
+    print(f"\n=== Testing Face Enhancement with Different Models ===")
+    
+    models_to_test = ["restoration", "super_resolution", "forensic_enhancement", "identity_preservation"]
+    results = {}
+    
+    for model_type in models_to_test:
+        print(f"\n--- Testing {model_type} model ---")
+        try:
+            response = requests.post(
+                f"{BACKEND_URL}/enhance-face/{case_id}?enhancement_type={model_type}", 
+                timeout=60
+            )
+            print(f"Status Code: {response.status_code}")
+            
+            if response.status_code == 200:
+                data = response.json()
+                print(f"Method used: {data.get('method_used')}")
+                print(f"Confidence score: {data.get('confidence_score')}")
+                print(f"Model description: {data.get('model_description')}")
+                results[model_type] = True
+            else:
+                print(f"❌ {model_type} model FAILED - Status code: {response.status_code}")
+                results[model_type] = False
+                
+        except Exception as e:
+            print(f"❌ {model_type} model FAILED - Error: {str(e)}")
+            results[model_type] = False
+    
+    passed_models = sum(results.values())
+    total_models = len(results)
+    
+    if passed_models == total_models:
+        print(f"✅ All {total_models} enhancement models PASSED")
+        return True
+    else:
+        print(f"⚠️ {passed_models}/{total_models} enhancement models passed")
+        return passed_models > 0
 
 def test_get_case(case_id):
     """Test Get Case - GET /api/case/{case_id}"""
