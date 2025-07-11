@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from bson import ObjectId
 import os
+from dotenv import load_dotenv
 import base64
 import uuid
 import asyncio
@@ -16,6 +17,9 @@ from PIL import Image
 import requests
 import json
 import time
+
+# Load environment variables
+load_dotenv()
 
 app = FastAPI(title="AI Face Reconstruction API", version="1.0.0")
 
