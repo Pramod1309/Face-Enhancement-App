@@ -234,22 +234,51 @@ const App = () => {
       </div>
 
       <div className="enhancement-options">
-        <h3>Enhancement Options</h3>
-        <div className="enhancement-buttons">
-          <button 
-            onClick={() => enhanceFace('restoration')} 
-            className="btn-primary"
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : 'Face Restoration'}
-          </button>
-          <button 
-            onClick={() => enhanceFace('super_resolution')} 
-            className="btn-primary"
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : 'Super Resolution'}
-          </button>
+        <h3>Government-Grade Enhancement Options</h3>
+        <div className="enhancement-grid">
+          <div className="enhancement-option">
+            <button 
+              onClick={() => enhanceFace('restoration')} 
+              className="btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Face Restoration'}
+            </button>
+            <p>High-fidelity restoration with identity preservation</p>
+          </div>
+          
+          <div className="enhancement-option">
+            <button 
+              onClick={() => enhanceFace('super_resolution')} 
+              className="btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Super Resolution'}
+            </button>
+            <p>Ultra-high resolution enhancement</p>
+          </div>
+          
+          <div className="enhancement-option">
+            <button 
+              onClick={() => enhanceFace('forensic_enhancement')} 
+              className="btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Forensic Enhancement'}
+            </button>
+            <p>Government-grade forensic reconstruction</p>
+          </div>
+          
+          <div className="enhancement-option">
+            <button 
+              onClick={() => enhanceFace('identity_preservation')} 
+              className="btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Processing...' : 'Identity Preservation'}
+            </button>
+            <p>Maximum identity consistency for analysis</p>
+          </div>
         </div>
       </div>
 
