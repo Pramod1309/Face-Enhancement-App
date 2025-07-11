@@ -39,8 +39,8 @@ def create_test_image_with_face():
     return buffer.getvalue()
 
 def test_health_check():
-    """Test API Health Check - GET /api/health"""
-    print("\n=== Testing API Health Check ===")
+    """Test API Health Check with HuggingFace Status - GET /api/health"""
+    print("\n=== Testing API Health Check with HuggingFace Status ===")
     try:
         response = requests.get(f"{BACKEND_URL}/health", timeout=10)
         print(f"Status Code: {response.status_code}")
@@ -50,6 +50,18 @@ def test_health_check():
             data = response.json()
             if data.get("status") == "healthy":
                 print("✅ Health check PASSED")
+                
+                # Check HuggingFace API status
+                hf_status = data.get("huggingface_api", "unknown")
+                print(f"HuggingFace API Status: {hf_status}")
+                
+                if hf_status == "enabled":
+                    print("✅ HuggingFace API integration is ENABLED")
+                elif hf_status == "disabled":
+                    print("⚠️ HuggingFace API integration is DISABLED (fallback mode)")
+                else:
+                    print("⚠️ HuggingFace API status unknown")
+                
                 return True
             else:
                 print("❌ Health check FAILED - Invalid response format")
