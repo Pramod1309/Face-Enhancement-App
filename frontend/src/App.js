@@ -315,7 +315,7 @@ const App = () => {
         
         <div className="result-stats">
           <div className="stat-card">
-            <h3>Analysis Report</h3>
+            <h3>Forensic Analysis Report</h3>
             <div className="stat-row">
               <span>Confidence Score:</span>
               <span className="confidence-score">
@@ -323,8 +323,22 @@ const App = () => {
               </span>
             </div>
             <div className="stat-row">
+              <span>Forensic Grade:</span>
+              <span className={`forensic-grade ${enhancementResult?.forensic_grade ? 'certified' : 'standard'}`}>
+                {enhancementResult?.forensic_grade ? 'CERTIFIED' : 'STANDARD'}
+              </span>
+            </div>
+            <div className="stat-row">
               <span>Method Used:</span>
               <span>{enhancementResult?.method_used}</span>
+            </div>
+            <div className="stat-row">
+              <span>Processing Time:</span>
+              <span>{enhancementResult?.processing_time?.toFixed(2)}s</span>
+            </div>
+            <div className="stat-row">
+              <span>Model Description:</span>
+              <span className="model-desc">{enhancementResult?.model_description}</span>
             </div>
             <div className="stat-row">
               <span>Case ID:</span>
