@@ -224,6 +224,12 @@ const App = () => {
               </span>
               <span className="stat-label">Faces Found</span>
             </div>
+            <div className="stat">
+              <span className="stat-value confidence">
+                {analysisResult?.detection_confidence ? (analysisResult.detection_confidence * 100).toFixed(1) + '%' : 'N/A'}
+              </span>
+              <span className="stat-label">Detection Confidence</span>
+            </div>
           </div>
         </div>
 
