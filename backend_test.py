@@ -194,8 +194,8 @@ def test_get_case(case_id):
         return False
 
 def test_get_all_cases():
-    """Test Get All Cases - GET /api/cases"""
-    print("\n=== Testing Get All Cases ===")
+    """Test Get All Cases with Statistics - GET /api/cases"""
+    print("\n=== Testing Get All Cases with Statistics ===")
     try:
         response = requests.get(f"{BACKEND_URL}/cases", timeout=10)
         print(f"Status Code: {response.status_code}")
@@ -205,6 +205,19 @@ def test_get_all_cases():
             
             if 'cases' in data and isinstance(data['cases'], list):
                 print(f"✅ Get all cases PASSED - Found {len(data['cases'])} cases")
+                
+                # Check for enhanced statistics
+                if 'statistics' in data:
+                    stats = data['statistics']
+                    print(f"Statistics found:")
+                    print(f"  - Total cases: {stats.get('total_cases', 'N/A')}")
+                    print(f"  - Processed cases: {stats.get('processed_cases', 'N/A')}")
+                    print(f"  - Faces detected: {stats.get('faces_detected', 'N/A')}")
+                    print(f"  - Processing rate: {stats.get('processing_rate', 'N/A')}%")
+                    print("✅ Enhanced statistics feature working")
+                else:
+                    print("⚠️ Statistics not found in response")
+                
                 return True
             else:
                 print("❌ Get all cases FAILED - Invalid response format")
@@ -215,6 +228,45 @@ def test_get_all_cases():
             
     except Exception as e:
         print(f"❌ Get all cases FAILED - Error: {str(e)}")
+        return False
+
+def test_models_endpoint():
+    """Test Get Available Models - GET /api/models"""
+    print("\n=== Testing Get Available Models ===")
+    try:
+        response = requests.get(f"{BACKEND_URL}/models", timeout=10)
+        print(f"Status Code: {response.status_code}")
+        print(f"Response: {response.json()}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            
+            if 'models' in data and 'api_status' in data:
+                models = data['models']
+                api_status = data['api_status']
+                
+                print(f"✅ Models endpoint PASSED")
+                print(f"API Status: {api_status}")
+                print(f"Available models: {len(models)}")
+                
+                # Check for expected models
+                expected_models = ["restoration", "super_resolution", "forensic_enhancement", "identity_preservation"]
+                for model in expected_models:
+                    if model in models:
+                        print(f"  ✅ {model}: {models[model]['description']}")
+                    else:
+                        print(f"  ❌ {model}: Missing")
+                
+                return True
+            else:
+                print("❌ Models endpoint FAILED - Invalid response format")
+                return False
+        else:
+            print(f"❌ Models endpoint FAILED - Status code: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Models endpoint FAILED - Error: {str(e)}")
         return False
 
 def test_invalid_case_id():
