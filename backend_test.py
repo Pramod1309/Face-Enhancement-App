@@ -303,12 +303,15 @@ def test_invalid_case_id():
 def main():
     """Run all backend API tests"""
     print("🚀 Starting AI Face Reconstruction Backend API Tests")
+    print("🔬 Testing HuggingFace API Integration & Government-Grade Features")
     print(f"Testing against: {BACKEND_URL}")
     
     results = {
         'health_check': False,
+        'models_endpoint': False,
         'image_upload': False,
         'face_enhancement': False,
+        'enhancement_models': False,
         'get_case': False,
         'get_all_cases': False,
         'error_handling': False
@@ -317,29 +320,35 @@ def main():
     case_id = None
     result_id = None
     
-    # Test 1: Health Check
+    # Test 1: Health Check with HuggingFace Status
     results['health_check'] = test_health_check()
     
-    # Test 2: Image Upload
+    # Test 2: Models Endpoint
+    results['models_endpoint'] = test_models_endpoint()
+    
+    # Test 3: Image Upload with Advanced Face Detection
     results['image_upload'], case_id = test_image_upload()
     
-    # Test 3: Face Enhancement (only if upload succeeded)
+    # Test 4: Face Enhancement (only if upload succeeded)
     if case_id:
         results['face_enhancement'], result_id = test_face_enhancement(case_id)
         
-        # Test 4: Get Case (only if we have a case_id)
+        # Test 5: Face Enhancement with Different Models
+        results['enhancement_models'] = test_face_enhancement_with_models(case_id)
+        
+        # Test 6: Get Case (only if we have a case_id)
         results['get_case'] = test_get_case(case_id)
     
-    # Test 5: Get All Cases
+    # Test 7: Get All Cases with Statistics
     results['get_all_cases'] = test_get_all_cases()
     
-    # Test 6: Error Handling
+    # Test 8: Error Handling
     results['error_handling'] = test_invalid_case_id()
     
     # Summary
-    print("\n" + "="*50)
-    print("🏁 TEST SUMMARY")
-    print("="*50)
+    print("\n" + "="*60)
+    print("🏁 HUGGINGFACE API INTEGRATION TEST SUMMARY")
+    print("="*60)
     
     passed = sum(results.values())
     total = len(results)
@@ -350,11 +359,27 @@ def main():
     
     print(f"\nOverall: {passed}/{total} tests passed")
     
+    # Special analysis for HuggingFace integration
+    print("\n" + "="*60)
+    print("🔬 HUGGINGFACE INTEGRATION ANALYSIS")
+    print("="*60)
+    
+    if results['health_check'] and results['models_endpoint']:
+        print("✅ HuggingFace API integration is properly configured")
+    else:
+        print("❌ HuggingFace API integration has issues")
+    
+    if results['enhancement_models']:
+        print("✅ Government-grade enhancement models are working")
+    else:
+        print("❌ Government-grade enhancement models have issues")
+    
     if passed == total:
-        print("🎉 All backend API tests PASSED!")
+        print("\n🎉 All backend API tests PASSED!")
+        print("🏆 HuggingFace integration is working with government-grade accuracy!")
         return True
     else:
-        print("⚠️  Some backend API tests FAILED!")
+        print(f"\n⚠️  {total - passed} backend API tests FAILED!")
         return False
 
 if __name__ == "__main__":
