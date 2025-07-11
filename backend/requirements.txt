@@ -25,4 +25,3 @@ jq>=1.6.0
 typer>=0.9.0
 opencv-python==4.8.1.78
 pillow==10.0.1
-HUGGINGFACE_API_KEY=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
